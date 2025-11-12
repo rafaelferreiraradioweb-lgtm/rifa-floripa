@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifa - Floripa Chess Open 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        header { text-align: center; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        h1 { color: #2c3e50; }
+        
+        /* --- NOVO: FOTO DE PERFIL --- */
+        .perfil-foto {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%; /* Deixa a foto redonda */
+            object-fit: cover;
+            margin-top: 10px;
+            border: 4px solid #eee;
+        }
+
+        .justificativa {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+        
+        /* --- NOVO: GALERIA DE PRÊMIOS (LIVROS) --- */
+        .premios-galeria {
+            display: flex;
+            flex-wrap: wrap; /* Permite que as fotos quebrem a linha */
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        .premios-galeria img {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        /* --- FIM NOVOS ESTILOS --- */
+
+        .status-rifa { text-align: center; font-size: 1.5rem; font-weight: 500; color: #2c3e50; margin: 25px 0 15px 0; }
+        .status-rifa span { font-weight: 700; color: #e74c3c; }
+        
+        /* Painel da Rifa */
+        .painel-rifa {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr); 
+            gap: 6px;
+            margin: 30px 0;
+        }
+        .numero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem; 
+            font-weight: bold;
+            aspect-ratio: 1 / 1;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        /* --- COR ALTERADA PARA VERDE --- */
+        .numero.livre { 
+            background: #e0ffed; /* Verde claro */
+            color: #006b3e; /* Verde escuro */
+        }
+        .numero.livre:hover { 
+            background: #006b3e; /* Verde escuro */
+            color: white; 
+        }
+        /* --- FIM DA ALTERAÇÃO --- */
+        
+        .numero.pendente { background: #fff3cd; color: #856404; cursor: not-allowed; opacity: 0.8; }
+        
+        .numero.vendido { /* Vermelho continua igual */
+            background: #e74c3c; 
+            color: #fff; 
+            cursor: not-allowed; 
+            opacity: 0.7; 
+        }
+        #loading { font-size: 1.2rem; text-align: center; padding: 40px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="minhafoto.jpg" alt="Foto de Rafael Ferreira" class="perfil-foto">
+            
+            <h1>Rifa: 10 Livros de Xadrez</h1>
+            
+            <p class="justificativa">
+                Olá, pessoal! Esta rifa é para me ajudar a arrecadar fundos para viajar e realizar meu sonho de competir no Flotipa Chess Open 2026. Conto com sua ajuda!
+            </p>
+
+            <p>Clique em um número verde para reservar!</p>
+            <div class="status-rifa" id="status-rifa">Carregando...</div>
+        </header>
+
+        <div class="premios-galeria">
+            <img src="livro1.jpg" alt="Prêmio 1">
+            <img src="livro2.jpg" alt="Prêmio 2">
+            <img src="livro3.jpg" alt="Prêmio 3">
+            <img src="livro4.jpg" alt="Prêmio 4">
+            <img src="livro5.jpg" alt="Prêmio 5">
+            <img src="livro6.jpg" alt="Prêmio 6">
+            <img src="livro7.jpg" alt="Prêmio 7">
+            <img src="livro8.jpg" alt="Prêmio 8">
+            <img src="livro9.jpg" alt="Prêmio 9">
+            <img src="livro10.jpg" alt="Prêmio 10">
+        </div>
+
+        <div class="painel-rifa" id="painel-rifa">
+            <div id="loading">Carregando números...</div>
+        </div>
+
+        <div class="regulamento">
+            <h2>Regulamento</h2>
+            <p><strong>Valor:</strong> R$ 10,00 por número.</p>
+            <p><strong>Pagamento:</strong> Chave Pix (rafaelferreiraradioweb@gmail.com). Reservas são feitas pelo WhatsApp após clicar no número.</p>
+            <p><strong>Sorteio:</strong> O sorteio será realizado no dia 05/01/2026.</p>
+        </div>
+    </div>
+
+    <script>
+        // SUAS CHAVES JÁ ESTÃO PREENCHIDAS
+        const SEU_TELEFONE_WHATSAPP = "5582996535079";
+        const SUPABASE_URL = "https://oqctondabteyhkqogxtn.supabase.co"; 
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xY3RvbmRhYnRleWhrcW9neHRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5Njc1MDEsImV4cCI6MjA3ODU0MzUwMX0.s3M828sPolvVSEdnANtGnHkfapn7jzOkvh7gMsIN74k";
+
+        // DAQUI PARA BAIXO O CÓDIGO FUNCIONA SOZINHO
+        const painel = document.getElementById('painel-rifa');
+        const statusRifa = document.getElementById('status-rifa');
+        
+        if (SUPABASE_URL === "COLOQUE_SUA_URL_SUPABASE_AQUI") {
+            painel.innerHTML = `<p style="color:red; text-align:center;"><b>ERRO: CHAVES NÃO CONFIGURADAS.</b></p>`;
+        }
+
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function buscarNumeros() {
+            try {
+                const { data, error } = await _supabase.from('rifa_numeros').select('*').order('numero_rifa', { ascending: true });
+                if (error) throw error;
+                painel.innerHTML = "";
+                let vendidos = 0;
+                let totalNumeros = data.length; 
+                data.forEach(numero => {
+                    const numeroDiv = document.createElement('div');
+                    numeroDiv.classList.add('numero');
+                    numeroDiv.textContent = numero.numero_rifa;
+                    let statusLimpo = numero.status ? numero.status.trim().toLowerCase() : 'livre';
+                    numeroDiv.classList.add(statusLimpo); 
+                    if (statusLimpo === 'vendido' || statusLimpo === 'pendente') {
+                        numeroDiv.title = `Comprado por: ${numero.nome_comprador || 'Reservado'}`;
+                        if (statusLimpo === 'vendido') { vendidos++; }
+                    } else {
+                        numeroDiv.title = "Clique para reservar este número!";
+                        numeroDiv.addEventListener('click', () => reservarNumero(numero.numero_rifa));
+                    }
+                    painel.appendChild(numeroDiv);
+                });
+                document.getElementById('status-rifa').innerHTML = `Status: <span>${vendidos} / ${totalNumeros}</span> vendidos`;
+            } catch (error) {
+                console.error("Erro ao buscar dados:", error.message);
+                painel.innerHTML = `<p style="color:red; text-align:center;"><b>Erro ao carregar a rifa.</b><br>Verifique as chaves do Supabase e a conexão.</p>`;
+            }
+        }
+        function reservarNumero(numero) {
+            const nome = prompt("Qual seu nome para reserva?");
+            if (nome) {
+                const mensagem = `Olá! Quero reservar o número ${numero} da rifa de xadrez. Meu nome é ${nome}.`;
+                const linkWhatsapp = `https://wa.me/${SEU_TELEFONE_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+                window.open(linkWhatsapp, '_blank');
+                alert("Você será redirecionado ao WhatsApp para confirmar sua reserva! Seu número só será garantido após a confirmação do PIX.");
+            }
+        }
+        buscarNumeros();
+    </script>
+</body>
+</html>
