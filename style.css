@@ -1,4 +1,4 @@
-/* ARQUIVO style.css (VERSÃO COM DUAS FOTOS, TEXTO NO MEIO E LEGENDAS) */
+/* ARQUIVO style.css (VERSÃO COM "CARRINHO") */
 body { 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
     background-color: #f4f4f9; 
@@ -24,194 +24,119 @@ h1 { color: #2c3e50; }
 
 /* --- SEÇÃO DE PERFIL --- */
 .secao-perfil {
-    display: flex; /* <-- MUDANÇA: Para alinhar fotos e texto */
-    flex-wrap: wrap; 
-    justify-content: center; /* <-- MUDANÇA: Centraliza os itens */
-    align-items: flex-start; /* <-- MUDANÇA: Alinha no topo, para o texto não ficar flutuando */
-    gap: 25px; /* <-- MUDANÇA: Espaçamento maior entre os elementos */
-    margin: 30px 0;
-    padding: 20px;
-    background: #fdfdfd;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    display: flex; flex-wrap: wrap; align-items: flex-start;
+    gap: 25px; margin: 30px 0; padding: 20px;
+    background: #fdfdfd; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    justify-content: center;
 }
-.perfil-item { /* Novo wrapper para foto e legenda */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    flex-shrink: 0; 
-    max-width: 180px; /* Limita a largura do item */
+.perfil-item {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; flex-shrink: 0; max-width: 180px;
 }
 .perfil-foto {
-    width: 150px;
-    height: 150px;
-    border-radius: 8px; 
-    object-fit: cover; 
-    border: 4px solid #eee;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: 150px; height: 150px; border-radius: 8px; 
+    object-fit: cover; border: 4px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
-.legenda-foto { /* Estilo para a legenda */
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 10px;
-    line-height: 1.3;
-}
-.perfil-texto {
-    flex: 1; 
-    min-width: 300px; 
-    max-width: 400px; /* Limita a largura do texto para ele não esticar demais */
-}
-.perfil-texto h2 {
-    color: #2c3e50;
-    margin-top: 0;
-}
-.perfil-texto p {
-    font-size: 1.1rem;
-    color: #555;
-    line-height: 1.6;
-    text-align: left; 
-}
-.perfil-texto strong {
-    color: #c0392b; 
-}
+.legenda-foto { font-size: 0.9rem; color: #666; margin-top: 10px; line-height: 1.3; }
+.perfil-texto { flex: 1; min-width: 300px; max-width: 400px; }
+.perfil-texto h2 { color: #2c3e50; margin-top: 0; }
+.perfil-texto p { font-size: 1.1rem; color: #555; line-height: 1.6; text-align: left; }
+.perfil-texto strong { color: #c0392b; }
 /* --- FIM DA SEÇÃO DE PERFIL --- */
-
 
 /* --- SEÇÃO DE PRÊMIOS --- */
 .secao-premios {
-    margin-top: 30px;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    text-align: center;
+    margin-top: 30px; padding: 20px; background: #f9f9f9;
+    border-radius: 8px; text-align: center;
 }
-.secao-premios h2 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-}
+.secao-premios h2 { color: #2c3e50; margin-bottom: 20px; font-size: 1.8rem; }
 .premios-galeria {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 15px; 
-    justify-items: center; 
+    display: grid; grid-template-columns: repeat(5, 1fr); 
+    gap: 15px; justify-items: center; 
 }
 .premios-galeria img {
-    width: 100%; 
-    height: 180px; 
-    max-width: 120px; 
-    object-fit: cover;
-    border-radius: 6px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    width: 100%; height: 180px; max-width: 120px; 
+    object-fit: cover; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     transition: transform 0.2s ease-in-out;
 }
-.premios-galeria img:hover {
-    transform: translateY(-5px) scale(1.02);
-}
-/* Media query para telas menores para a galeria de livros */
-@media (max-width: 768px) {
-    .premios-galeria {
-        grid-template-columns: repeat(3, 1fr); /* 3 colunas em telas médias */
-    }
-}
-@media (max-width: 480px) {
-    .premios-galeria {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas muito pequenas */
-    }
-}
+.premios-galeria img:hover { transform: translateY(-5px) scale(1.02); }
+@media (max-width: 768px) { .premios-galeria { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 480px) { .premios-galeria { grid-template-columns: repeat(2, 1fr); } }
 /* --- FIM DA SEÇÃO DE PRÊMIOS --- */
 
-
 /* --- SEÇÃO DA RIFA (PAINEL) --- */
-.secao-rifa {
-    margin-top: 40px;
-    text-align: center;
-}
-.secao-rifa h2 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-}
-.status-rifa { 
-    text-align: center; 
-    font-size: 1.5rem; 
-    font-weight: 500; 
-    color: #2c3e50; 
-    margin: 25px 0 15px 0; 
-}
-.status-rifa span { 
-    font-weight: 700; 
-    color: #e74c3c; 
-}
-.painel-rifa {
-    display: grid;
-    grid-template-columns: repeat(20, 1fr); 
-    gap: 6px;
-    margin: 30px 0;
-}
-@media (max-width: 768px) {
-    .painel-rifa {
-        grid-template-columns: repeat(10, 1fr);
-    }
-}
-.numero {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.7rem; 
-    font-weight: bold;
-    aspect-ratio: 1 / 1;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    user-select: none; 
-}
-
-/* --- CORES ATUAIS (COMO VOCÊ GOSTA) --- */
-.numero.livre { 
-    background: #f0f0f0; 
-    color: #555; 
-}
-.numero.livre:hover { 
-    background: #e0e0e0; 
-    color: #333; 
-}
-.numero.pendente { 
-    background: #fff3cd; 
-    color: #856404; 
-    cursor: not-allowed; 
-    opacity: 0.8; 
-}
-.numero.vendido { 
-    background: #e74c3c; 
-    color: #fff; 
-    cursor: not-allowed; 
-    opacity: 0.7; 
-}
-#loading { 
-    font-size: 1.2rem; 
-    text-align: center; 
-    padding: 40px; 
-}
-/* --- FIM DAS CORES --- */
-
-
-.regulamento {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #eee;
-    text-align: center;
-}
-.regulamento h2 {
-    color: #2c3e50;
-    margin-bottom: 15px;
-}
-.regulamento p {
+.secao-rifa { margin-top: 40px; text-align: center; }
+.secao-rifa h2 { color: #2c3e50; margin-bottom: 5px; } /* Menos margem */
+.instrucao-rifa { /* NOVO ESTILO */
     font-size: 1rem;
     color: #555;
-    line-height: 1.5;
+    margin-bottom: 20px;
 }
-.regulamento p:last-child {
+.btn-reservar { /* NOVO BOTÃO */
+    font-size: 1.2rem;
     font-weight: bold;
-    color: #006b3e; 
+    color: #fff;
+    background-color: #27ae60; /* Verde */
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 20px;
 }
+.btn-reservar:hover:not(:disabled) {
+    background-color: #2ecc71;
+}
+.btn-reservar:disabled { /* Estilo do botão desabilitado */
+    background-color: #95a5a6; /* Cinza */
+    cursor: not-allowed;
+}
+
+.status-rifa { 
+    text-align: center; font-size: 1.5rem; font-weight: 500; 
+    color: #2c3e50; margin: 25px 0 15px 0; 
+}
+.status-rifa span { font-weight: 700; color: #e74c3c; }
+.painel-rifa {
+    display: grid; grid-template-columns: repeat(20, 1fr); 
+    gap: 6px; margin: 30px 0;
+}
+@media (max-width: 768px) { .painel-rifa { grid-template-columns: repeat(10, 1fr); } }
+.numero {
+    display: flex; justify-content: center; align-items: center;
+    font-size: 0.7rem; font-weight: bold; aspect-ratio: 1 / 1;
+    border-radius: 4px; transition: all 0.2s ease;
+    cursor: pointer; user-select: none; 
+}
+
+/* --- CORES ATUAIS + NOVA COR "SELECIONADO" --- */
+.numero.livre { 
+    background: #f0f0f0; color: #555; 
+}
+.numero.livre:hover { 
+    background: #e0e0e0; color: #333; 
+}
+.numero.selecionado { /* NOVO ESTADO "NO CARRINHO" */
+    background: #3498db; /* Azul */
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+}
+.numero.pendente { 
+    background: #fff3cd; color: #856404; 
+    cursor: not-allowed; opacity: 0.8; 
+}
+.numero.vendido { 
+    background: #e74c3c; color: #fff; 
+    cursor: not-allowed; opacity: 0.7; 
+}
+#loading { font-size: 1.2rem; text-align: center; padding: 40px; }
+/* --- FIM DAS CORES --- */
+
+.regulamento {
+    margin-top: 40px; padding-top: 20px;
+    border-top: 2px solid #eee; text-align: center;
+}
+.regulamento h2 { color: #2c3e50; margin-bottom: 15px; }
+.regulamento p { font-size: 1rem; color: #555; line-height: 1.5; }
+.regulamento p:last-child { font-weight: bold; color: #006b3e; }
