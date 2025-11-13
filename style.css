@@ -1,4 +1,4 @@
-/* ARQUIVO style.css (VERSÃO COM FOTOS QUADRADAS E 5 COLUNAS) */
+/* ARQUIVO style.css (VERSÃO COM DUAS FOTOS, TEXTO NO MEIO E LEGENDAS) */
 body { 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
     background-color: #f4f4f9; 
@@ -24,28 +24,43 @@ h1 { color: #2c3e50; }
 
 /* --- SEÇÃO DE PERFIL --- */
 .secao-perfil {
-    display: flex;
+    display: flex; /* <-- MUDANÇA: Para alinhar fotos e texto */
     flex-wrap: wrap; 
-    align-items: center;
-    gap: 20px;
+    justify-content: center; /* <-- MUDANÇA: Centraliza os itens */
+    align-items: flex-start; /* <-- MUDANÇA: Alinha no topo, para o texto não ficar flutuando */
+    gap: 25px; /* <-- MUDANÇA: Espaçamento maior entre os elementos */
     margin: 30px 0;
     padding: 20px;
     background: #fdfdfd;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
+.perfil-item { /* Novo wrapper para foto e legenda */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-shrink: 0; 
+    max-width: 180px; /* Limita a largura do item */
+}
 .perfil-foto {
     width: 150px;
     height: 150px;
-    border-radius: 8px; /* <-- MUDANÇA: FOTO QUADRADA */
+    border-radius: 8px; 
     object-fit: cover; 
     border: 4px solid #eee;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    flex-shrink: 0; 
+}
+.legenda-foto { /* Estilo para a legenda */
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+    line-height: 1.3;
 }
 .perfil-texto {
     flex: 1; 
     min-width: 300px; 
+    max-width: 400px; /* Limita a largura do texto para ele não esticar demais */
 }
 .perfil-texto h2 {
     color: #2c3e50;
@@ -76,18 +91,16 @@ h1 { color: #2c3e50; }
     margin-bottom: 20px;
     font-size: 1.8rem;
 }
-/* Galeria com 5 colunas */
 .premios-galeria {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* <-- MUDANÇA: 5 COLUNAS */
+    grid-template-columns: repeat(5, 1fr); 
     gap: 15px; 
     justify-items: center; 
 }
-/* Removida a .coluna-premios (não é mais necessária) */
 .premios-galeria img {
-    width: 100%; /* Ocupa a coluna */
-    height: 180px; /* Altura fixa para os livros */
-    max-width: 120px; /* Tamanho máximo para ficarem pequenas */
+    width: 100%; 
+    height: 180px; 
+    max-width: 120px; 
     object-fit: cover;
     border-radius: 6px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -95,6 +108,17 @@ h1 { color: #2c3e50; }
 }
 .premios-galeria img:hover {
     transform: translateY(-5px) scale(1.02);
+}
+/* Media query para telas menores para a galeria de livros */
+@media (max-width: 768px) {
+    .premios-galeria {
+        grid-template-columns: repeat(3, 1fr); /* 3 colunas em telas médias */
+    }
+}
+@media (max-width: 480px) {
+    .premios-galeria {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas muito pequenas */
+    }
 }
 /* --- FIM DA SEÇÃO DE PRÊMIOS --- */
 
@@ -145,11 +169,11 @@ h1 { color: #2c3e50; }
 
 /* --- CORES ATUAIS (COMO VOCÊ GOSTA) --- */
 .numero.livre { 
-    background: #f0f0f0; /* Cinza claro */
+    background: #f0f0f0; 
     color: #555; 
 }
 .numero.livre:hover { 
-    background: #e0e0e0; /* Cinza escuro */
+    background: #e0e0e0; 
     color: #333; 
 }
 .numero.pendente { 
@@ -158,7 +182,7 @@ h1 { color: #2c3e50; }
     cursor: not-allowed; 
     opacity: 0.8; 
 }
-.numero.vendido { /* Vermelho */
+.numero.vendido { 
     background: #e74c3c; 
     color: #fff; 
     cursor: not-allowed; 
@@ -187,8 +211,7 @@ h1 { color: #2c3e50; }
     color: #555;
     line-height: 1.5;
 }
-/* Destaque para a nova promoção */
 .regulamento p:last-child {
     font-weight: bold;
-    color: #006b3e; /* Um verde para destacar */
+    color: #006b3e; 
 }
