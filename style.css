@@ -1,4 +1,4 @@
-/* ARQUIVO style.css (VERSÃO COM FOTOS E CORES ATUAIS) */
+/* ARQUIVO style.css (VERSÃO COM FOTOS QUADRADAS E 5 COLUNAS) */
 body { 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
     background-color: #f4f4f9; 
@@ -37,7 +37,7 @@ h1 { color: #2c3e50; }
 .perfil-foto {
     width: 150px;
     height: 150px;
-    border-radius: 50%; 
+    border-radius: 8px; /* <-- MUDANÇA: FOTO QUADRADA */
     object-fit: cover; 
     border: 4px solid #eee;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -57,8 +57,8 @@ h1 { color: #2c3e50; }
     line-height: 1.6;
     text-align: left; 
 }
-.perfil-texto strong { /* Destaque para o canal */
-    color: #c0392b; /* Um tom de vermelho */
+.perfil-texto strong {
+    color: #c0392b; 
 }
 /* --- FIM DA SEÇÃO DE PERFIL --- */
 
@@ -76,23 +76,18 @@ h1 { color: #2c3e50; }
     margin-bottom: 20px;
     font-size: 1.8rem;
 }
-/* Galeria em 2 colunas */
+/* Galeria com 5 colunas */
 .premios-galeria {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 colunas */
+    grid-template-columns: repeat(5, 1fr); /* <-- MUDANÇA: 5 COLUNAS */
     gap: 15px; 
     justify-items: center; 
 }
-.coluna-premios {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; 
-    width: 100%;
-}
+/* Removida a .coluna-premios (não é mais necessária) */
 .premios-galeria img {
-    width: 100%; 
-    height: auto; 
-    max-width: 250px; 
+    width: 100%; /* Ocupa a coluna */
+    height: 180px; /* Altura fixa para os livros */
+    max-width: 120px; /* Tamanho máximo para ficarem pequenas */
     object-fit: cover;
     border-radius: 6px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -191,4 +186,9 @@ h1 { color: #2c3e50; }
     font-size: 1rem;
     color: #555;
     line-height: 1.5;
+}
+/* Destaque para a nova promoção */
+.regulamento p:last-child {
+    font-weight: bold;
+    color: #006b3e; /* Um verde para destacar */
 }
