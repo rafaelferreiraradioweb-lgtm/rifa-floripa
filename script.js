@@ -1,4 +1,4 @@
-// ARQUIVO script.js (VERSÃO FINAL COM "CARRINHO")
+// ARQUIVO script.js (VERSÃO FINAL COM "CARRINHO" E WHATSAPP CORRIGIDO)
 
 // --- CONFIGURAÇÕES ---
 const SEU_TELEFONE_WHATSAPP = "5582996535079";
@@ -8,7 +8,7 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 // --- VARIÁVEIS GLOBAIS ---
 const painel = document.getElementById('painel-rifa');
 const statusRifa = document.getElementById('status-rifa');
-const btnReservar = document.getElementById('btn-reservar'); // O novo botão
+const btnReservar = document.getElementById('btn-reservar'); 
 let numerosSelecionados = []; // O nosso "carrinho"
 
 // --- CONEXÃO SUPABASE ---
@@ -23,7 +23,7 @@ async function buscarNumeros() {
         const { data, error } = await _supabase.from('rifa_numeros').select('*').order('numero_rifa', { ascending: true });
         if (error) throw error;
         
-        painel.innerHTML = ""; // Limpa o "Carregando..."
+        painel.innerHTML = ""; 
         let vendidos = 0;
         let totalNumeros = data.length; 
         
@@ -39,7 +39,6 @@ async function buscarNumeros() {
                 numeroDiv.title = `Comprado por: ${numero.nome_comprador || 'Reservado'}`;
                 if (statusLimpo === 'vendido') { vendidos++; }
             } else {
-                // MUDANÇA: O clique agora chama 'toggleNumero' (o carrinho)
                 numeroDiv.title = "Clique para selecionar este número!";
                 numeroDiv.addEventListener('click', () => toggleNumero(numeroDiv, numero.numero_rifa));
             }
@@ -59,16 +58,13 @@ function toggleNumero(elementoDiv, numero) {
     const index = numerosSelecionados.indexOf(numero);
 
     if (index > -1) {
-        // Já estava selecionado, então REMOVE
         numerosSelecionados.splice(index, 1);
         elementoDiv.classList.remove('selecionado');
     } else {
-        // Não estava selecionado, então ADICIONA
         numerosSelecionados.push(numero);
         elementoDiv.classList.add('selecionado');
     }
     
-    // Atualiza o botão
     atualizarBotaoReserva();
 }
 
@@ -87,27 +83,22 @@ function atualizarBotaoReserva() {
     }
 }
 
-// 4. FUNÇÃO ATUALIZADA: Agora se chama 'enviarReservaWhatsApp'
+// 4. FUNÇÃO CORRIGIDA: (SEM PROMPT, SEM ALERT)
 function enviarReservaWhatsApp() {
-    if (numerosSelecionados.length === 0) return; // Segurança
-    
-    const nome = prompt("Qual seu nome para reserva?");
-    if (nome) {
-        // Ordena os números e junta com vírgula
-        const numerosOrdenados = numerosSelecionados.sort((a, b) => a - b);
-        const numerosString = numerosOrdenados.join(', ');
+    if (numerosSelecionados.length === 0) return; 
 
-        const mensagem = `Olá! Quero reservar os números: ${numerosString}. (Total: ${numerosSelecionados.length} números). Meu nome é ${nome}.`;
-        const linkWhatsapp = `https://wa.me/${SEU_TELEFONE_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
-        
-        window.open(linkWhatsapp, '_blank');
-        
-        alert("Você será redirecionado ao WhatsApp para confirmar sua reserva! Seus números só serão garantidos após a confirmação do PIX.");
-    }
+    // Ordena os números e junta com vírgula
+    const numerosOrdenados = numerosSelecionados.sort((a, b) => a - b);
+    const numerosString = numerosOrdenados.join(', ');
+
+    // Mensagem pré-pronta. O usuário vai digitar o nome no WhatsApp.
+    const mensagem = `Olá! Quero reservar os números da rifa do Floripa Chess Open 2026:\n\n*${numerosString}*\n\n(Total: ${numerosSelecionados.length} números). \n\nMeu nome é: `;
+    const linkWhatsapp = `https://wa.me/${SEU_TELEFONE_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+    
+    // Abre o WhatsApp DIRETAMENTE. O navegador não vai bloquear.
+    window.open(linkWhatsapp, '_blank');
 }
 
 // --- INICIALIZAÇÃO ---
-// 1. Adiciona o "ouvinte" de clique ao botão
 btnReservar.addEventListener('click', enviarReservaWhatsApp);
-// 2. Busca os números do Supabase
 buscarNumeros();
